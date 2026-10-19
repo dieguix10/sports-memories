@@ -173,18 +173,34 @@
                 <li>Funciona sin conexión</li>
               </ul>
               <div class="about__actions">
-                <button type="button" class="btn btn--ghost" data-open-legal="privacidad">
-                  Privacidad y derechos
-                </button>
-                <button type="button" class="btn btn--ghost" data-open-legal="contacto">
-                  Contacto y sugerencias
-                </button>
-                <button type="button" class="btn btn--ghost" data-open-install>
-                  📱 Instalar como app
-                </button>
-                <button type="button" class="btn btn--ghost" data-open-profile>
-                  👤 Mi perfil local
-                </button>
+                <div class="mini-actions">
+                  <button type="button" class="mini-action mini-action--primary" data-open-profile>
+                    <span class="mini-action__icon" aria-hidden="true">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.4"></circle><path d="M5 20c1.2-3.6 3.9-5.4 7-5.4s5.8 1.8 7 5.4"></path></svg>
+                    </span>
+                    <span class="mini-action__text">
+                      <strong>Mi cuenta local</strong>
+                      <span>Tu nombre y un código en tu dispositivo</span>
+                    </span>
+                  </button>
+                  <button type="button" class="mini-action" data-open-install>
+                    <span class="mini-action__icon" aria-hidden="true">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="2.5" width="10" height="19" rx="2.5"></rect><path d="M10.5 5.5h3"></path></svg>
+                    </span>
+                    <span class="mini-action__text">
+                      <strong>Instalar como app</strong>
+                      <span>iPhone y Android, paso a paso</span>
+                    </span>
+                  </button>
+                </div>
+                <div class="about__secondary">
+                  <button type="button" class="btn btn--ghost btn--sm" data-open-legal="privacidad">
+                    Privacidad y derechos
+                  </button>
+                  <button type="button" class="btn btn--ghost btn--sm" data-open-legal="contacto">
+                    Contacto y sugerencias
+                  </button>
+                </div>
               </div>
             </div>
           </article>
