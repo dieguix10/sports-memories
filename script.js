@@ -445,7 +445,9 @@ function closeDialog(dialog) {
   if (dialog && dialog.open) dialog.close();
 }
 
-/* Confirmación con promesa: true si se acepta, false si se cancela */
+/* Confirmación con promesa: true si se acepta, false si se cancela.
+   El resultado se resuelve en los propios clics; el evento "close" queda
+   como red de seguridad (p. ej. cerra con Escape o clic en el fondo). */
 function askConfirmation(options) {
   const dialog = $("#confirm-dialog");
   const acceptButton = $("#confirm-accept");
@@ -457,20 +459,29 @@ function askConfirmation(options) {
   dialog.returnValue = "cancel";
 
   return new Promise((resolve) => {
-    const handleClose = () => {
-      resolve(dialog.returnValue === "confirm");
+    let settled = false;
+    const settle = (value) => {
+      if (settled) return;
+      settled = true;
+      resolve(value);
     };
-
-    dialog.addEventListener("close", handleClose, { once: true });
 
     acceptButton.onclick = () => {
       dialog.returnValue = "confirm";
       dialog.close();
+      settle(true);
     };
     cancelButton.onclick = () => {
       dialog.returnValue = "cancel";
       dialog.close();
+      settle(false);
     };
+
+    dialog.addEventListener(
+      "close",
+      () => settle(dialog.returnValue === "confirm"),
+      { once: true }
+    );
 
     openDialog(dialog);
     window.setTimeout(() => acceptButton.focus(), 60);
@@ -1489,7 +1500,6 @@ function handleHashChange() {
 
 /* ---------- 22b. Información legal (creador, privacidad y derechos) ---------- */
 const LEGAL_TABS = ["privacidad", "derechos", "contacto"];
-
 function showLegalTab(name) {
   const target = LEGAL_TABS.indexOf(name) !== -1 ? name : "privacidad";
 
@@ -1540,6 +1550,349 @@ function bindLegal() {
 function setFooterYear() {
   const yearNode = $("#footer-year");
   if (yearNode) yearNode.textContent = String(new Date().getFullYear());
+}
+
+/* ---------- 22d. Tutorial de instalación como app (iOS y Android) ---------- */
+const INSTALL_TABS = ["ios", "android"];
+
+function showInstallTab(name) {
+  const target = INSTALL_TABS.indexOf(name) !== -1 ? name : "ios";
+
+  $$("[data-install-tab]").forEach((tab) => {
+    const isActive = tab.dataset.installTab === target;
+    tab.classList.toggle("is-active", isActive);
+    tab.setAttribute("aria-selected", isActive ? "true" : "false");
+    tab.setAttribute("tabindex", isActive ? "0" : "-1");
+  });
+
+  INSTALL_TABS.forEach((key) => {
+    const panel = $("#panel-inst-" + key);
+    if (panel) panel.hidden = key !== target;
+  });
+}
+
+function bindInstall() {
+  document.addEventListener("click", (event) => {
+    const opener = event.target.closest("[data-open-install]");
+    if (opener) {
+      showInstallTab(opener.dataset.openInstall || "ios");
+      openDialog($("#install-dialog"));
+      return;
+    }
+
+    const tab = event.target.closest("[data-install-tab]");
+    if (tab) showInstallTab(tab.dataset.installTab);
+  });
+
+  const tabs = $(".install-tabs");
+  if (!tabs) return;
+
+  tabs.addEventListener("keydown", (event) => {
+    if (event.key !== "ArrowRight" && event.key !== "ArrowLeft") return;
+    event.preventDefault();
+
+    const activeTab = tabs.querySelector("[data-install-tab].is-active");
+    const currentIndex = activeTab ? INSTALL_TABS.indexOf(activeTab.dataset.installTab) : 0;
+    const delta = event.key === "ArrowRight" ? 1 : INSTALL_TABS.length - 1;
+    const nextName = INSTALL_TABS[(currentIndex + delta) % INSTALL_TABS.length];
+
+    showInstallTab(nextName);
+    const nextTab = tabs.querySelector('[data-install-tab="' + nextName + '"]');
+    if (nextTab) nextTab.focus();
+  });
+}
+
+/* ---------- 23. Perfil local (identidad + bloqueo opcional) ---------- */
+const PROFILE_KEY = "sportsMemories.profile.v1";
+const PROFILE_UNLOCK_KEY = "sportsMemories.profile.unlocked";
+let profile = null;
+
+function profileUnlocked() {
+  try {
+    return window.sessionStorage.getItem(PROFILE_UNLOCK_KEY) === "1";
+  } catch (error) {
+    return false;
+  }
+}
+
+function loadProfile() {
+  try {
+    const parsed = JSON.parse(window.localStorage.getItem(PROFILE_KEY) || "null");
+    if (!parsed || typeof parsed !== "object" || typeof parsed.nombre !== "string") return null;
+    return {
+      nombre: clampText(parsed.nombre, 60),
+      pinHash: typeof parsed.pinHash === "string" && parsed.pinHash ? parsed.pinHash : null,
+      creado: Number.isFinite(parsed.creado) ? parsed.creado : Date.now(),
+    };
+  } catch (error) {
+    return null;
+  }
+}
+
+function saveProfileToStorage() {
+  try {
+    window.localStorage.setItem(PROFILE_KEY, JSON.stringify(profile));
+  } catch (error) {
+    showToast(storageErrorMessage(error), "error", 6000);
+  }
+}
+
+/* Huella del código: SHA-256 cuando está disponible; fallback simple si no.
+   Nota: es un disuasorio local, no una seguridad de servidor. */
+async function hashPin(pin) {
+  try {
+    if (window.crypto && window.crypto.subtle && typeof window.TextEncoder === "function") {
+      const data = new TextEncoder().encode("sportsMemories::" + pin);
+      const digest = await window.crypto.subtle.digest("SHA-256", data);
+      return Array.from(new Uint8Array(digest))
+        .map((byte) => byte.toString(16).padStart(2, "0"))
+        .join("");
+    }
+  } catch (error) {
+    // continúa con el fallback
+  }
+  let hash = 5381;
+  const source = "sportsMemories::" + pin;
+  for (let index = 0; index < source.length; index += 1) {
+    hash = ((hash << 5) + hash + source.charCodeAt(index)) >>> 0;
+  }
+  return "simple:" + hash.toString(16);
+}
+
+function isValidPinDraft(value) {
+  return /^\d{4,6}$/.test(value);
+}
+
+function refreshProfileUI() {
+  const hero = $("#hero-profile");
+  if (hero) {
+    hero.hidden = !profile;
+    const nameNode = $("#hero-profile-name");
+    if (nameNode) nameNode.textContent = profile ? profile.nombre : "";
+  }
+}
+
+function openProfileDialog() {
+  const form = $("#profile-form");
+  form.reset();
+  clearProfileFormErrors();
+  $("#profile-pin-fields").hidden = true;
+  $("#profile-pin").checked = profile ? Boolean(profile.pinHash) : false;
+
+  const intro = $("#profile-intro");
+  const title = $("#profile-dialog-title");
+  const saveButton = $("#profile-save");
+  const deleteButton = $("#profile-delete");
+  const lockButton = $("#profile-lock-now");
+  const meta = $("#profile-meta");
+
+  if (profile) {
+    title.textContent = "Mi perfil local";
+    intro.textContent =
+      "Este es tu perfil en este dispositivo. Puedes cambiar el nombre, ajustar el código o eliminar el perfil.";
+    $("#profile-name").value = profile.nombre;
+    saveButton.textContent = "Guardar cambios";
+    deleteButton.hidden = false;
+    lockButton.hidden = !profile.pinHash;
+
+    meta.hidden = false;
+    $("#profile-meta-name").textContent = profile.nombre;
+    $("#profile-meta-details").textContent =
+      "Creado el " + formatLongDate(dateToISO(new Date(profile.creado))) +
+      " · Bloqueo con código: " + (profile.pinHash ? "activo" : "sin código");
+  } else {
+    title.textContent = "Crea tu perfil local";
+    intro.textContent =
+      "Crea tu identidad en esta app: un nombre para tu diario y, si quieres, un código para " +
+      "bloquear su apertura en este dispositivo. Todo se queda en este navegador.";
+    saveButton.textContent = "Crear perfil";
+    deleteButton.hidden = true;
+    lockButton.hidden = true;
+    meta.hidden = true;
+  }
+
+  openDialog($("#profile-dialog"));
+  window.setTimeout(() => $("#profile-name").focus(), 80);
+}
+
+function clearProfileFormErrors() {
+  $("#err-profile-name").hidden = true;
+  $("#err-profile-name").textContent = "";
+  $("#err-profile-pin").hidden = true;
+  $("#err-profile-pin").textContent = "";
+  $("#err-lock-pin").hidden = true;
+  $("#err-lock-pin").textContent = "";
+}
+
+function setProfileError(node, message) {
+  node.hidden = !message;
+  node.textContent = message || "";
+}
+
+async function handleProfileSubmit(event) {
+  event.preventDefault();
+
+  const name = clampText($("#profile-name").value, 60);
+  if (name.length < 2) {
+    setProfileError($("#err-profile-name"), "Escribe un nombre (al menos 2 letras).");
+    $("#profile-name").focus();
+    return;
+  }
+
+  const pinWanted = $("#profile-pin").checked;
+  const pinInput = $("#profile-pin-input").value.trim();
+  const pinRepeat = $("#profile-pin-repeat").value.trim();
+  const pinError = $("#err-profile-pin");
+
+  let nextPinHash = profile ? profile.pinHash : null;
+
+  if (pinWanted) {
+    const fieldsFilled = pinInput !== "" || pinRepeat !== "";
+    if (fieldsFilled) {
+      if (!isValidPinDraft(pinInput)) {
+        setProfileError(pinError, "El código debe tener entre 4 y 6 números.");
+        $("#profile-pin-input").focus();
+        return;
+      }
+      if (pinInput !== pinRepeat) {
+        setProfileError(pinError, "Los dos códigos no coinciden.");
+        $("#profile-pin-repeat").focus();
+        return;
+      }
+      nextPinHash = await hashPin(pinInput);
+    } else if (!profile || !profile.pinHash) {
+      setProfileError(pinError, "Escribe el código o desmarca la casilla.");
+      $("#profile-pin-input").focus();
+      return;
+    }
+    /* Con la casilla marcada y campos vacíos sobre un perfil que ya tenía
+       código, se conserva el código actual (no se toca). */
+  } else {
+    nextPinHash = null;
+  }
+
+  const wasNew = !profile;
+  profile = {
+    nombre: name,
+    pinHash: nextPinHash,
+    creado: profile ? profile.creado : Date.now(),
+  };
+  saveProfileToStorage();
+  setProfileError(pinError, "");
+  setProfileError($("#err-profile-name"), "");
+  closeDialog($("#profile-dialog"));
+  refreshProfileUI();
+
+  if (!nextPinHash) {
+    try { window.sessionStorage.removeItem(PROFILE_UNLOCK_KEY); } catch (error) { /* sin sesión */ }
+  } else {
+    try { window.sessionStorage.setItem(PROFILE_UNLOCK_KEY, "1"); } catch (error) { /* sin sesión */ }
+  }
+
+  showToast(
+    wasNew
+      ? "Perfil " + (profile.pinHash ? "creado con bloqueo" : "creado") + ". ¡Tu diario ya tiene nombre!"
+      : "Perfil actualizado.",
+    "success"
+  );
+}
+
+function handleProfileDelete() {
+  if (!profile) return;
+  askConfirmation({
+    title: "¿Eliminar tu perfil?",
+    message:
+      "Se borra el nombre y el código de este dispositivo, pero tus recuerdos y fotos NO se tocan. Esta acción no se puede deshacer.",
+    confirmLabel: "Sí, eliminar perfil",
+  }).then((confirmed) => {
+    if (!confirmed) return;
+    profile = null;
+    try {
+      window.localStorage.removeItem(PROFILE_KEY);
+      window.sessionStorage.removeItem(PROFILE_UNLOCK_KEY);
+    } catch (error) {
+      // seguimos igualmente
+    }
+    clearProfileFormErrors();
+    closeDialog($("#profile-dialog"));
+    refreshProfileUI();
+    showToast("Perfil eliminado. Tus recuerdos siguen en este navegador.", "success");
+  });
+}
+
+function bindProfile() {
+  document.addEventListener("click", (event) => {
+    const opener = event.target.closest("[data-open-profile]");
+    if (opener) {
+      openProfileDialog();
+      return;
+    }
+  });
+
+  $("#profile-form").addEventListener("submit", handleProfileSubmit);
+  $("#profile-delete").addEventListener("click", handleProfileDelete);
+  $("#profile-pin").addEventListener("change", () => {
+    $("#profile-pin-fields").hidden = !$("#profile-pin").checked;
+    if (!$("#profile-pin").checked) setProfileError($("#err-profile-pin"), "");
+  });
+  $("#profile-lock-now").addEventListener("click", () => {
+    if (!profile || !profile.pinHash) return;
+    closeDialog($("#profile-dialog"));
+    try { window.sessionStorage.removeItem(PROFILE_UNLOCK_KEY); } catch (error) { /* sin sesión */ }
+    openLockDialog();
+  });
+
+  $("#lock-form").addEventListener("submit", async (event) => {
+    event.preventDefault();
+    const pinInput = $("#lock-pin");
+    const errorNode = $("#err-lock-pin");
+    const value = pinInput.value.trim();
+
+    if (!isValidPinDraft(value)) {
+      setProfileError(errorNode, "El código debe tener entre 4 y 6 números.");
+      return;
+    }
+
+    const hash = await hashPin(value);
+    if (profile && hash === profile.pinHash) {
+      setProfileError(errorNode, "");
+      try { window.sessionStorage.setItem(PROFILE_UNLOCK_KEY, "1"); } catch (error) { /* sin sesión */ }
+      closeDialog($("#lock-dialog"));
+      showToast("Perfil desbloqueado. Bienvenido de nuevo, " + profile.nombre + ".", "success");
+    } else {
+      setProfileError(errorNode, "El código no es correcto. Inténtalo de nuevo.");
+      pinInput.select();
+    }
+  });
+
+  $("#lock-forgot").addEventListener("click", () => {
+    askConfirmation({
+      title: "¿Quitar el bloqueo del perfil?",
+      message:
+        "Si no recuerdas el código, puedes quitarlo y entrar de normal. Los recuerdos no se pierden, pero el bloqueo desaparece hasta que lo vuelvas a configurar.",
+      confirmLabel: "Quitar el bloqueo",
+    }).then((confirmed) => {
+      if (!confirmed) return;
+      if (profile) {
+        profile = Object.assign({}, profile, { pinHash: null });
+        saveProfileToStorage();
+      }
+      try { window.sessionStorage.removeItem(PROFILE_UNLOCK_KEY); } catch (error) { /* sin sesión */ }
+      closeDialog($("#lock-dialog"));
+      showToast("Bloqueo retirado. Puedes crear un nuevo código en Mi perfil.", "info");
+    });
+  });
+}
+
+function openLockDialog() {
+  if (!profile || !profile.pinHash) return;
+  $("#lock-name").textContent = profile.nombre;
+  openDialog($("#lock-dialog"));
+  window.setTimeout(() => {
+    const pinInput = $("#lock-pin");
+    pinInput.value = "";
+    pinInput.focus();
+  }, 80);
 }
 
 /* ---------- 22c. Animaciones, transiciones y efectos visuales ---------- */
@@ -1796,6 +2149,10 @@ function bindDialogs() {
     dialog.addEventListener("close", syncModalState);
     dialog.addEventListener("cancel", (event) => {
       if (dialog.id === "confirm-dialog") dialog.returnValue = "cancel";
+      if (dialog.id === "lock-dialog" && !profileUnlocked()) {
+        event.preventDefault(); // no se puede cerrar sin escribir el código
+        return;
+      }
       if (dialog.id === "record-dialog" && processingPhotos) {
         event.preventDefault();
         showToast("Espera un momento: estamos optimizando las fotografías.", "info");
@@ -1804,6 +2161,7 @@ function bindDialogs() {
     dialog.addEventListener("click", (event) => {
       // Un clic en el fondo (fuera del panel) cierra el diálogo.
       if (event.target !== dialog) return;
+      if (dialog.id === "lock-dialog" && !profileUnlocked()) return; // cerrar con fondo desactivado
       if (dialog.id === "confirm-dialog") dialog.returnValue = "cancel";
       tryClose(dialog);
     });
@@ -1935,10 +2293,12 @@ function bindDetailAndLightbox() {
 
 function init() {
   records = loadRecords();
+  profile = loadProfile();
 
   buildSportOptions();
   buildSportFilters();
   withEnterAnimation(renderAll);
+  refreshProfileUI();
 
   if (!storageOK) $("#storage-banner").hidden = false;
 
@@ -1950,6 +2310,8 @@ function init() {
   bindForm();
   bindDetailAndLightbox();
   bindLegal();
+  bindInstall();
+  bindProfile();
   bindScrollEffects();
   bindScrollReveals();
   setFooterYear();
@@ -1959,6 +2321,11 @@ function init() {
     scroll: false,
     intro: true,
   });
+
+  // Bloqueo del perfil: si hay código y no se ha desbloqueado la pestaña, lo primero es entrar.
+  if (profile && profile.pinHash && !profileUnlocked()) {
+    openLockDialog();
+  }
 }
 
 document.addEventListener("DOMContentLoaded", init);

@@ -95,6 +95,7 @@
           </p>
           <h1 class="hero__title" data-animate>Cada aventura<br><em>cuenta.</em></h1>
           <p class="hero__lead" data-animate>Rutas al amanecer, series que dolieron y paisajes que no quieres olvidar. Guarda aquí todo lo que vives sobre ruedas, piernas o agua.</p>
+          <p class="hero__profile" id="hero-profile" hidden>✉ Tu diario personal de <strong id="hero-profile-name"></strong></p>
           <div class="hero__actions" data-animate>
             <button type="button" class="btn btn--primary btn--lg" data-action="add">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true">
@@ -177,6 +178,12 @@
                 </button>
                 <button type="button" class="btn btn--ghost" data-open-legal="contacto">
                   Contacto y sugerencias
+                </button>
+                <button type="button" class="btn btn--ghost" data-open-install>
+                  📱 Instalar como app
+                </button>
+                <button type="button" class="btn btn--ghost" data-open-profile>
+                  👤 Mi perfil local
                 </button>
               </div>
             </div>
@@ -303,6 +310,8 @@
           <li><button type="button" class="footer-link" data-open-legal="privacidad">Política de privacidad</button></li>
           <li><button type="button" class="footer-link" data-open-legal="derechos">Autoría y derechos de uso</button></li>
           <li><button type="button" class="footer-link" data-open-legal="contacto">Contacto y soporte</button></li>
+          <li><button type="button" class="footer-link" data-open-install>📱 Instalar como app (iOS y Android)</button></li>
+          <li><button type="button" class="footer-link" data-open-profile>👤 Mi perfil local</button></li>
           <li><a class="footer-link" href="#inicio">Volver arriba</a></li>
         </ul>
       </div>
@@ -370,7 +379,7 @@
             </div>
             <div class="field">
               <label for="record-distance">Distancia <span class="opt">(km)</span></label>
-              <input id="record-distance" name="distancia" type="number" min="0" step="0.1" inputmode="decimal" placeholder="42,5" aria-describedby="error-distance">
+              <input id="record-distance" name="distancia" type="text" inputmode="decimal" maxlength="12" autocomplete="off" placeholder="42,5" aria-describedby="error-distance">
               <p class="field__error" id="error-distance" hidden></p>
             </div>
           </div>
@@ -383,7 +392,7 @@
             </div>
             <div class="field">
               <label for="record-elevation">Desnivel positivo <span class="opt">(m)</span></label>
-              <input id="record-elevation" name="desnivel" type="number" min="0" step="1" inputmode="numeric" placeholder="820" aria-describedby="error-elevation">
+              <input id="record-elevation" name="desnivel" type="text" inputmode="numeric" maxlength="12" autocomplete="off" placeholder="820" aria-describedby="error-elevation">
               <p class="field__error" id="error-elevation" hidden></p>
             </div>
           </div>
@@ -677,6 +686,180 @@
         <p>Proyecto personal en desarrollo · Los datos se guardan solo en tu navegador.</p>
         <button type="button" class="btn btn--ghost" data-close-dialog>Cerrar</button>
       </footer>
+    </div>
+  </dialog>
+
+  <!-- ================= INSTALAR COMO APP ================= -->
+  <dialog class="modal" id="install-dialog" aria-labelledby="install-title">
+    <div class="modal__panel modal__panel--legal">
+      <header class="modal__head">
+        <div>
+          <p class="eyebrow">Instalación</p>
+          <h2 class="modal__title" id="install-title">Instalar como app en tu móvil</h2>
+        </div>
+        <button type="button" class="icon-btn" data-close-dialog aria-label="Cerrar instrucciones de instalación">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"></path></svg>
+        </button>
+      </header>
+
+      <div class="legal">
+        <div class="legal__tabs install-tabs" role="tablist" aria-label="Instrucciones por sistema">
+          <button type="button" class="legal__tab is-active" role="tab" id="tab-inst-ios" aria-controls="panel-inst-ios" aria-selected="true" data-install-tab="ios">iPhone · iOS</button>
+          <button type="button" class="legal__tab" role="tab" id="tab-inst-android" aria-controls="panel-inst-android" aria-selected="false" tabindex="-1" data-install-tab="android">Android</button>
+        </div>
+
+        <div class="legal__panels">
+          <section class="legal__panel" id="panel-inst-ios" role="tabpanel" aria-labelledby="tab-inst-ios" tabindex="0">
+            <p class="legal__updated">Requisito: hay que usar Safari. En iOS, solo Safari puede instalar la app.</p>
+
+            <h3>Pasos</h3>
+            <ul>
+              <li><strong>1.</strong> Abre esta web en <strong>Safari</strong> (no en Chrome ni otra app).</li>
+              <li><strong>2.</strong> Pulsa el botón <strong>Compartir</strong>: es el cuadrado con la flecha hacia arriba.</li>
+              <li><strong>3.</strong> Busca y pulsa <strong>«Añadir a pantalla de inicio»</strong> (queda un poco abajo del menú).</li>
+              <li><strong>4.</strong> Revisa el nombre y pulsa <strong>Añadir</strong>.</li>
+            </ul>
+
+            <h3>Resultado</h3>
+            <p>
+              Tienes un icono con el diseño lima de Sports Memories en la pantalla de inicio. Al abrirlo, la app corre
+              a <strong>pantalla completa</strong>, sin barra de direcciones, como cualquier otra app.
+            </p>
+
+            <h3>Si el icono sale genérico o antiguo</h3>
+            <ul>
+              <li>Elimina el icono actual.</li>
+              <li>Cierra Safari del todo, vuelve a abrir la web y repite los pasos.</li>
+            </ul>
+
+            <p class="legal__disclaimer">
+              Aviso de datos: la app instalada y la web de Safari comparten el mismo almacenamiento (el de esta
+              dirección web). Pero si borras los datos del sitio o desinstalas el icono, recuerda que los recuerdos
+              viven solo en este dispositivo.
+            </p>
+          </section>
+
+          <section class="legal__panel" id="panel-inst-android" role="tabpanel" aria-labelledby="tab-inst-android" tabindex="0" hidden>
+            <p class="legal__updated">Funciona con Chrome, Edge o Samsung Internet.</p>
+
+            <h3>Pasos con Chrome</h3>
+            <ul>
+              <li><strong>1.</strong> Abre esta web en <strong>Chrome</strong>.</li>
+              <li><strong>2.</strong> Pulsa el menú <strong>⋮</strong> (tres puntos, arriba a la derecha).</li>
+              <li><strong>3.</strong> Pulsa <strong>«Instalar aplicación»</strong> o <strong>«Añadir a pantalla de inicio»</strong>.</li>
+              <li><strong>4.</strong> Confirma con <strong>Instalar</strong>.</li>
+            </ul>
+
+            <h3>Pasos con Samsung Internet</h3>
+            <ul>
+              <li>Menú <strong>≡</strong> → <strong>Añadir página a</strong> → <strong>Pantalla de inicio</strong>.</li>
+            </ul>
+
+            <h3>Resultado</h3>
+            <p>
+              En Android la app se instala de verdad: aparece en el cajón de aplicaciones, tiene su propia ventana, y
+              se puede desinstalar como cualquier otra (mantén el icono → Desinstalar).
+            </p>
+
+            <p class="legal__disclaimer">
+              Nota: los recuerdos se guardan en cada dispositivo y no se sincronizan entre móvil y ordenador.
+            </p>
+          </section>
+        </div>
+      </div>
+
+      <footer class="legal__footer">
+        <p>Tus recuerdos se guardan solo en este navegador y este dispositivo.</p>
+        <button type="button" class="btn btn--ghost" data-close-dialog>Cerrar</button>
+      </footer>
+    </div>
+  </dialog>
+
+  <!-- ================= PERFIL LOCAL ================= -->
+  <dialog class="modal" id="profile-dialog" aria-labelledby="profile-dialog-title">
+    <div class="modal__panel">
+      <header class="modal__head">
+        <div>
+          <p class="eyebrow">Mi perfil</p>
+          <h2 class="modal__title" id="profile-dialog-title">Mi perfil local</h2>
+        </div>
+        <button type="button" class="icon-btn" data-close-dialog aria-label="Cerrar perfil">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"></path></svg>
+        </button>
+      </header>
+
+      <form id="profile-form" novalidate>
+        <div class="form__body">
+          <p class="profile__intro" id="profile-intro">
+            Crea tu identidad en esta app: un nombre para tu diario y, si quieres, un código para
+            bloquear su apertura en este dispositivo. Todo se queda en este navegador.
+          </p>
+
+          <div class="field">
+            <label for="profile-name">Nombre del titular <span class="req">*</span></label>
+            <input id="profile-name" type="text" maxlength="60" autocomplete="off" placeholder="¿Cómo te llamas en el diario?" aria-describedby="err-profile-name">
+            <p class="field__error" id="err-profile-name" hidden></p>
+          </div>
+
+          <div class="field profile__pin-toggle">
+            <label class="profile__check">
+              <input type="checkbox" id="profile-pin">
+              <span>Proteger la apertura con un código (4-6 números)</span>
+            </label>
+          </div>
+
+          <div id="profile-pin-fields" hidden>
+            <div class="form__row">
+              <div class="field">
+                <label for="profile-pin-input">Código <span class="req">*</span></label>
+                <input id="profile-pin-input" type="password" inputmode="numeric" maxlength="6" autocomplete="off" aria-describedby="err-profile-pin">
+              </div>
+              <div class="field">
+                <label for="profile-pin-repeat">Repite el código <span class="req">*</span></label>
+                <input id="profile-pin-repeat" type="password" inputmode="numeric" maxlength="6" autocomplete="off">
+              </div>
+            </div>
+            <p class="field__error" id="err-profile-pin" hidden></p>
+            <p class="field__hint">El código no se guarda tal cual: solo su huella irreversible.</p>
+          </div>
+
+          <div class="profile__meta" id="profile-meta" hidden>
+            <p><strong id="profile-meta-name"></strong></p>
+            <p id="profile-meta-details"></p>
+          </div>
+        </div>
+
+        <footer class="form__footer">
+          <p class="form__note">Perfil local: si borras los datos del sitio, se borra también.</p>
+          <div class="form__actions">
+            <button type="button" class="btn btn--danger-ghost" id="profile-delete" hidden>Eliminar perfil</button>
+            <button type="button" class="btn btn--ghost" id="profile-lock-now" hidden>Bloquear ahora</button>
+            <button type="submit" class="btn btn--primary" id="profile-save">Crear perfil</button>
+          </div>
+        </footer>
+      </form>
+    </div>
+  </dialog>
+
+  <!-- ================= DESBLOQUEO ================= -->
+  <dialog class="modal" id="lock-dialog" aria-labelledby="lock-title">
+    <div class="modal__panel modal__panel--confirm">
+      <div class="confirm__icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="10.5" width="14" height="10" rx="2.5"></rect><path d="M8.5 10.5V7.5a3.5 3.5 0 0 1 7 0v3"></path></svg>
+      </div>
+      <h2 class="modal__title" id="lock-title">Perfil bloqueado</h2>
+      <p class="confirm__text">Escribe tu código de 4-6 números para entrar en el diario de <strong id="lock-name"></strong>.</p>
+      <form id="lock-form" novalidate>
+        <div class="field">
+          <label for="lock-pin" class="visually-hidden">Código</label>
+          <input id="lock-pin" type="password" inputmode="numeric" maxlength="6" autocomplete="off" aria-describedby="err-lock-pin" placeholder="••••">
+          <p class="field__error" id="err-lock-pin" hidden></p>
+        </div>
+        <div class="confirm__actions">
+          <button type="button" class="btn btn--ghost" id="lock-forgot">No recuerdo el código</button>
+          <button type="submit" class="btn btn--primary" id="lock-enter">Entrar</button>
+        </div>
+      </form>
     </div>
   </dialog>
 
