@@ -3103,6 +3103,30 @@ dialog.modal[open]::backdrop {
   border: 0;
 }
 
+/* ---------- 24. Bienvenida (solo primera visita) ---------- */
+.welcome__actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  margin-top: 1.5rem;
+}
+
+.welcome__actions .btn {
+  width: 100%;
+  padding: 0.85rem 1.2rem;
+}
+
+.welcome__skip {
+  margin-top: 0.35rem;
+}
+
+.welcome__note {
+  margin-top: 1.2rem;
+  color: var(--muted);
+  font-size: 0.73rem;
+  line-height: 1.6;
+}
+
 /* En iOS con barra de estado translucida, el contenido no debe taparse arriba */
 @supports (-webkit-touch-callout: none) {
   .site-header {

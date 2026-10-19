@@ -1895,6 +1895,56 @@ function openLockDialog() {
   }, 80);
 }
 
+/* ---------- 23b. Bienvenida (solo la primera visita) ---------- */
+const WELCOME_KEY = "sportsMemories.welcome.v1";
+
+function welcomeSeen() {
+  try {
+    return window.localStorage.getItem(WELCOME_KEY) === "1";
+  } catch (error) {
+    return false;
+  }
+}
+
+function markWelcomeSeen() {
+  try {
+    window.localStorage.setItem(WELCOME_KEY, "1");
+  } catch (error) {
+    /* si falla, la bienvenida volverá a salir; sin mayor daño */
+  }
+}
+
+function maybeShowWelcome() {
+  if (welcomeSeen() || profile) return;
+  const dialog = $("#welcome-dialog");
+  if (!dialog) return;
+  openDialog(dialog);
+}
+
+function bindWelcome() {
+  document.addEventListener("click", (event) => {
+    const action = event.target.closest("[data-welcome-action]");
+    if (!action || !$("#welcome-dialog").open) return;
+
+    // Al tocar cualquier opción se considera vista (no depende del evento close).
+    markWelcomeSeen();
+
+    const type = action.dataset.welcomeAction;
+    if (type === "profile") {
+      closeDialog($("#welcome-dialog")); // al cerrar queda marcada como vista
+      openProfileDialog();
+    } else if (type === "install") {
+      // se abre encima de la bienvenida; al cerrarla, esta sigue visible
+      openDialog($("#install-dialog"));
+    } else {
+      closeDialog($("#welcome-dialog"));
+    }
+  });
+
+  // Red de seguridad: cualquier cierre (ESC, fondo) también la cuenta como vista.
+  $("#welcome-dialog").addEventListener("close", markWelcomeSeen);
+}
+
 /* ---------- 22c. Animaciones, transiciones y efectos visuales ---------- */
 const ENTER_STAGGER = 55;
 const motionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -2312,6 +2362,7 @@ function init() {
   bindLegal();
   bindInstall();
   bindProfile();
+  bindWelcome();
   bindScrollEffects();
   bindScrollReveals();
   setFooterYear();
@@ -2326,6 +2377,9 @@ function init() {
   if (profile && profile.pinHash && !profileUnlocked()) {
     openLockDialog();
   }
+
+  // Primera visita sin perfil: bienvenida única con los dos pasos (perfil e instalación).
+  maybeShowWelcome();
 }
 
 document.addEventListener("DOMContentLoaded", init);

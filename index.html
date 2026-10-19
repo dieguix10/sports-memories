@@ -775,6 +775,36 @@
     </div>
   </dialog>
 
+  <!-- ================= BIENVENIDA PRIMERA VEZ ================= -->
+  <dialog class="modal" id="welcome-dialog" aria-labelledby="welcome-title">
+    <div class="modal__panel modal__panel--confirm">
+      <div class="confirm__icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M2.5 19.5 9 8l4 6.5 2.4-4 6.1 9H2.5Z"></path>
+        </svg>
+      </div>
+      <h2 class="modal__title" id="welcome-title">¡Bienvenido a Sports Memories!</h2>
+      <p class="confirm__text">
+        Tu diario de aventuras empieza aquí. Antes de nada, dos cosas rápidas:
+      </p>
+      <div class="welcome__actions">
+        <button type="button" class="btn btn--primary" data-welcome-action="profile">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="3.4"></circle><path d="M5 20c1.2-3.6 3.9-5.4 7-5.4s5.8 1.8 7 5.4"></path></svg>
+          1. Crear mi perfil (tu nombre)
+        </button>
+        <button type="button" class="btn btn--ghost" data-welcome-action="install">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="7" y="2.5" width="10" height="19" rx="2.5"></rect><path d="M10.5 5.5h3"></path></svg>
+          2. Cómo instalarla en el móvil (iOS y Android)
+        </button>
+        <button type="button" class="btn btn--ghost btn--sm welcome__skip" data-welcome-action="skip">
+          Explorar ahora sin perfil
+        </button>
+      </div>
+      <p class="welcome__note">Esta bienvenida solo aparece esta vez. Los recuerdos siempre se quedan en tu dispositivo.</p>
+    </div>
+  </dialog>
+
+  <div class="toasts" id="toasts" role="status" aria-live="polite" aria-atomic="false"></div>
   <!-- ================= PERFIL LOCAL ================= -->
   <dialog class="modal" id="profile-dialog" aria-labelledby="profile-dialog-title">
     <div class="modal__panel">
