@@ -3010,6 +3010,27 @@ dialog.modal[open]::backdrop {
   }
 }
 
+/* ---------- 20. App instalable (iOS) ---------- */
+/* Evita el zoom automatico de iOS al tocar un campo < 16px */
+@media (max-width: 760px) {
+  .field input,
+  .field textarea {
+    font-size: max(16px, 1em);
+  }
+}
+
+/* En iOS con barra de estado translucida, el contenido no debe taparse arriba */
+@supports (-webkit-touch-callout: none) {
+  .site-header {
+    padding-top: env(safe-area-inset-top);
+  }
+
+  /* Las esquinas superiores heredan el fondo del header mientras se hace scroll */
+  .site-header.is-scrolled {
+    padding-top: env(safe-area-inset-top);
+  }
+}
+
 /* ---------- 21. Impresión ---------- */
 @media print {
   .site-header,
