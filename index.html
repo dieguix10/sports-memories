@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Sports Memories: tu diario personal de rutas, entrenamientos, aventuras y fotografías.">
+  <meta name="theme-color" content="#08120e">
+  <title>Sports Memories · Cada aventura cuenta</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23c9f45b'/%3E%3Cpath d='M5 24l7-12 5 8 3-4 7 8H5z' fill='%230a140d'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body data-section="inicio">
+  <!-- Barrido de luz que cruza la pantalla al cambiar de sección -->
+  <div class="page-wipe" id="page-wipe" aria-hidden="true"></div>
+
+  <a class="skip-link" href="#main">Saltar al contenido</a>
+
+  <!-- ================= CABECERA ================= -->
+  <header class="site-header">
+    <div class="container header__inner">
+      <a class="brand" href="#inicio" aria-label="Sports Memories, ir al inicio">
+        <span class="brand__mark" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M2.5 19.5 9 8l4 6.5 2.4-4 6.1 9H2.5Z"></path>
+          </svg>
+        </span>
+        <span class="brand__text"><strong>Sports</strong><span>Memories</span></span>
+      </a>
+
+      <nav class="main-nav" aria-label="Navegación principal">
+        <span class="nav-indicator" id="nav-indicator" aria-hidden="true"></span>
+        <a class="nav-link" href="#inicio" data-nav="inicio">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M3 10.5 12 3l9 7.5"></path><path d="M5 9.5V21h14V9.5"></path>
+          </svg>
+          <span>Inicio</span>
+        </a>
+        <a class="nav-link" href="#calendario" data-nav="calendario">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <rect x="3" y="5" width="18" height="16" rx="2.5"></rect><path d="M8 3v4M16 3v4M3 10h18"></path>
+          </svg>
+          <span>Calendario</span>
+        </a>
+        <a class="nav-link" href="#recuerdos" data-nav="recuerdos">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <rect x="3" y="4" width="18" height="16" rx="2.5"></rect><circle cx="8.5" cy="9.5" r="1.6"></circle><path d="m4 17 5-4.5 4 3.5 3-2.5 4 3.5"></path>
+          </svg>
+          <span>Recuerdos</span>
+        </a>
+      </nav>
+
+      <button type="button" class="btn btn--primary header__cta" data-action="add">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true">
+          <path d="M12 5v14M5 12h14"></path>
+        </svg>
+        Añadir recuerdo
+      </button>
+    </div>
+  </header>
+
+  <div class="storage-banner container" id="storage-banner" role="status" hidden>
+    <strong>Modo sin guardado.</strong> Este navegador bloquea el almacenamiento local: podrás usar la web, pero los recuerdos se perderán al recargar.
+  </div>
+
+  <main id="main">
+    <!-- ================= INICIO ================= -->
+    <section class="view" id="inicio" data-view="inicio">
+      <div class="hero">
+        <svg class="hero__art" viewBox="0 0 900 700" fill="none" aria-hidden="true" preserveAspectRatio="xMidYMid slice">
+          <g stroke="currentColor" stroke-width="1.4" opacity=".55">
+            <path d="M86 406c99-124 236-196 382-188 128 7 244 73 337 185"></path>
+            <path d="M35 470c118-147 281-233 454-224 152 8 290 87 400 220"></path>
+            <path d="M0 536c135-169 321-267 519-256 174 9 332 100 458 252"></path>
+            <path d="M-40 604c152-194 361-306 583-294 196 11 373 114 515 289"></path>
+          </g>
+          <g stroke="currentColor" stroke-width="2" opacity=".9">
+            <path d="M540 238l71-96 62 82 35-43 96 124"></path>
+          </g>
+          <circle cx="650" cy="188" r="88" stroke="currentColor" stroke-width="1.2" opacity=".45"></circle>
+          <circle cx="650" cy="188" r="122" stroke="currentColor" stroke-width="1" opacity=".25"></circle>
+        </svg>
+        <div class="container hero__inner">
+          <p class="eyebrow" data-animate>
+            <span class="eyebrow__dot" aria-hidden="true"></span>
+            Tu diario de aventuras
+            <span class="eyebrow__sep" aria-hidden="true">·</span>
+            <span class="eyebrow__badge">En desarrollo</span>
+          </p>
+          <h1 class="hero__title" data-animate>Cada aventura<br><em>cuenta.</em></h1>
+          <p class="hero__lead" data-animate>Rutas al amanecer, series que dolieron y paisajes que no quieres olvidar. Guarda aquí todo lo que vives sobre ruedas, piernas o agua.</p>
+          <div class="hero__actions" data-animate>
+            <button type="button" class="btn btn--primary btn--lg" data-action="add">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true">
+                <path d="M12 5v14M5 12h14"></path>
+              </svg>
+              Añadir recuerdo
+            </button>
+            <a class="btn btn--ghost btn--lg" href="#recuerdos">
+              Ver mi galería
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M4 12h16M13 5l7 7-7 7"></path>
+              </svg>
+            </a>
+          </div>
+          <dl class="hero__stats" aria-label="Resumen de tus recuerdos" data-animate>
+            <div class="stat"><dt>Recuerdos</dt><dd id="stat-records">0</dd></div>
+            <div class="stat"><dt>Kilómetros</dt><dd><span id="stat-km">0</span><span class="stat__unit">km</span></dd></div>
+            <div class="stat"><dt>Desnivel</dt><dd><span id="stat-elev">0</span><span class="stat__unit">m</span></dd></div>
+          </dl>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="container">
+          <div class="section__head" data-animate>
+            <div>
+              <p class="eyebrow">Últimas actividades</p>
+              <h2 class="section__title">Recién vivido</h2>
+            </div>
+            <a href="#recuerdos" class="link-arrow" id="latest-link">
+              Ver todos los recuerdos
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M4 12h16M13 5l7 7-7 7"></path>
+              </svg>
+            </a>
+          </div>
+          <div class="card-grid" id="latest-grid"></div>
+
+          <div class="empty" id="home-empty" hidden>
+            <div class="empty__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M2.5 19.5 9 8l4 6.5 2.4-4 6.1 9H2.5Z"></path><path d="M8 6.5 9 8"></path>
+              </svg>
+            </div>
+            <h3 class="empty__title">Tu próxima aventura empieza aquí</h3>
+            <p class="empty__text">Todavía no has guardado ningún recuerdo. Añade tu primera ruta, entreno o escapada y empieza a llenar tu diario.</p>
+            <button type="button" class="btn btn--primary" data-action="add">Añadir mi primer recuerdo</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="section section--about">
+        <div class="container">
+          <article class="about" data-scroll-reveal>
+            <div class="about__avatar" aria-hidden="true">
+              <span>DR</span>
+            </div>
+            <div class="about__body">
+              <p class="eyebrow">Sobre el proyecto</p>
+              <h2 class="about__title">Creado por Diego Ruiz</h2>
+              <p class="about__text">
+                Sports Memories es un proyecto personal de <strong>Diego Ruiz</strong>, desarrollador web y
+                aficionado al deporte. Nació con una idea sencilla: guardar en un solo lugar las rutas,
+                entrenamientos y paisajes que no quieres olvidar.
+              </p>
+              <p class="about__text">
+                Está en <strong>desarrollo activo</strong> (versión 1.0), así que irán llegando mejoras.
+                Tus recuerdos y fotografías se quedan siempre en tu dispositivo: no hay registro, ni
+                servidores, ni publicidad.
+              </p>
+              <ul class="about__tags">
+                <li>En desarrollo · v1.0</li>
+                <li>Sin registro</li>
+                <li>Datos solo en tu dispositivo</li>
+                <li>Funciona sin conexión</li>
+              </ul>
+              <div class="about__actions">
+                <button type="button" class="btn btn--ghost" data-open-legal="privacidad">
+                  Privacidad y derechos
+                </button>
+                <button type="button" class="btn btn--ghost" data-open-legal="contacto">
+                  Contacto y sugerencias
+                </button>
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= CALENDARIO ================= -->
+    <section class="view" id="calendario" data-view="calendario" hidden>
+      <div class="container page">
+        <header class="page__head">
+          <p class="eyebrow" data-animate>Calendario</p>
+          <h1 class="page__title" data-animate>Tu mes en movimiento</h1>
+          <p class="page__lead" data-animate>Explora por fechas todo lo que has vivido. Los días con recuerdos aparecen marcados en verde.</p>
+        </header>
+
+        <div class="calendar-layout">
+          <div class="calendar-card" data-animate>
+            <div class="calendar__toolbar">
+              <button type="button" class="icon-btn" id="calendar-prev" aria-label="Mes anterior">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 5-7 7 7 7"></path></svg>
+              </button>
+              <h2 class="calendar__title" id="calendar-title">Octubre 2026</h2>
+              <div class="calendar__actions">
+                <button type="button" class="btn btn--tiny btn--ghost" id="calendar-today">Hoy</button>
+                <button type="button" class="icon-btn" id="calendar-next" aria-label="Mes siguiente">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7"></path></svg>
+                </button>
+              </div>
+            </div>
+
+            <div class="calendar__weekdays" aria-hidden="true">
+              <span>Lun</span><span>Mar</span><span>Mié</span><span>Jue</span><span>Vie</span><span>Sáb</span><span>Dom</span>
+            </div>
+            <div class="calendar__grid" id="calendar-grid" role="group" aria-labelledby="calendar-title"></div>
+            <p class="calendar__legend"><span class="legend-dot" aria-hidden="true"></span>Días con recuerdos</p>
+          </div>
+
+          <aside class="day-panel" aria-labelledby="day-title">
+            <div class="day-panel__head">
+              <div>
+                <p class="eyebrow" id="day-eyebrow">Día seleccionado</p>
+                <h2 class="day-panel__title" id="day-title">Selecciona un día</h2>
+              </div>
+              <button type="button" class="icon-btn icon-btn--accent" id="day-add" aria-label="Añadir un recuerdo en este día" title="Añadir recuerdo">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"></path></svg>
+              </button>
+            </div>
+            <div class="day-list" id="day-list"></div>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= RECUERDOS ================= -->
+    <section class="view" id="recuerdos" data-view="recuerdos" hidden>
+      <div class="container page">
+        <header class="page__head page__head--row">
+          <div>
+            <p class="eyebrow" data-animate>Recuerdos</p>
+            <h1 class="page__title" data-animate>La galería de tu aventura</h1>
+            <p class="page__lead" id="gallery-count" data-animate>0 recuerdos guardados</p>
+          </div>
+          <button type="button" class="btn btn--primary page__cta" data-action="add" data-animate>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"></path></svg>
+            Añadir recuerdo
+          </button>
+        </header>
+
+        <div class="filters" data-animate>
+          <div class="search">
+            <svg class="search__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true">
+              <circle cx="11" cy="11" r="7"></circle><path d="m16.5 16.5 4.5 4.5"></path>
+            </svg>
+            <input type="search" id="search-input" class="search__input" placeholder="Buscar por título o descripción…" aria-label="Buscar recuerdos por título o descripción" autocomplete="off">
+          </div>
+          <div class="sport-filters" id="sport-filters" role="group" aria-label="Filtrar por deporte"></div>
+        </div>
+
+        <div class="gallery-grid" id="gallery-grid"></div>
+
+        <div class="empty" id="gallery-empty" hidden>
+          <div class="empty__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="11" cy="11" r="7"></circle><path d="m16.5 16.5 4.5 4.5"></path>
+            </svg>
+          </div>
+          <h3 class="empty__title" id="gallery-empty-title">No encontramos recuerdos</h3>
+          <p class="empty__text" id="gallery-empty-text">Prueba con otro deporte o cambia el texto de búsqueda.</p>
+          <button type="button" class="btn btn--ghost" id="clear-filters">Limpiar filtros</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div class="footer-block footer-block--brand" data-scroll-reveal>
+        <span class="brand__mark" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M2.5 19.5 9 8l4 6.5 2.4-4 6.1 9H2.5Z"></path>
+          </svg>
+        </span>
+        <div>
+          <p class="footer-brand__name">Sports Memories</p>
+          <p class="footer-text">
+            Diario deportivo personal hecho con HTML, CSS y JavaScript puro, sin frameworks ni dependencias externas.
+          </p>
+          <p class="footer-badge">Proyecto en desarrollo · Versión 1.0</p>
+        </div>
+      </div>
+
+      <div class="footer-block" data-scroll-reveal>
+        <h2 class="footer-title">Creador</h2>
+        <p class="footer-author">Diego Ruiz</p>
+        <p class="footer-text">Diseño, desarrollo y contenidos del proyecto.</p>
+        <a class="footer-link" href="mailto:diego.ruiz@example.com">diego.ruiz@example.com</a>
+      </div>
+
+      <div class="footer-block" data-scroll-reveal>
+        <h2 class="footer-title">Información y derechos</h2>
+        <ul class="footer-links">
+          <li><button type="button" class="footer-link" data-open-legal="privacidad">Política de privacidad</button></li>
+          <li><button type="button" class="footer-link" data-open-legal="derechos">Autoría y derechos de uso</button></li>
+          <li><button type="button" class="footer-link" data-open-legal="contacto">Contacto y soporte</button></li>
+          <li><a class="footer-link" href="#inicio">Volver arriba</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="container footer-bottom">
+      <p>© <span id="footer-year">2026</span> Diego Ruiz · Todos los derechos reservados.</p>
+      <p>Tus recuerdos y fotos se guardan solo en este navegador.</p>
+    </div>
+  </footer>
+
+  <!-- Navegación móvil -->
+  <nav class="mobile-nav" aria-label="Navegación móvil">
+    <span class="mobile-nav__indicator" aria-hidden="true"></span>
+    <a href="#inicio" data-nav="inicio">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5"></path><path d="M5 9.5V21h14V9.5"></path></svg>
+      <span>Inicio</span>
+    </a>
+    <a href="#calendario" data-nav="calendario">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2.5"></rect><path d="M8 3v4M16 3v4M3 10h18"></path></svg>
+      <span>Calendario</span>
+    </a>
+    <a href="#recuerdos" data-nav="recuerdos">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2.5"></rect><circle cx="8.5" cy="9.5" r="1.6"></circle><path d="m4 17 5-4.5 4 3.5 3-2.5 4 3.5"></path></svg>
+      <span>Recuerdos</span>
+    </a>
+  </nav>
+
+  <button type="button" class="fab" data-action="add" aria-label="Añadir recuerdo">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"></path></svg>
+  </button>
+
+  <!-- ================= FORMULARIO ================= -->
+  <dialog class="modal" id="record-dialog" aria-labelledby="record-dialog-title">
+    <div class="modal__panel modal__panel--wide">
+      <header class="modal__head">
+        <div>
+          <p class="eyebrow" id="record-dialog-eyebrow">Nueva actividad</p>
+          <h2 class="modal__title" id="record-dialog-title">Añadir recuerdo</h2>
+        </div>
+        <button type="button" class="icon-btn" data-close-dialog aria-label="Cerrar formulario">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"></path></svg>
+        </button>
+      </header>
+
+      <form id="record-form" class="form" novalidate>
+        <div class="form__body">
+          <div class="field">
+            <label for="record-title">Título de la actividad <span class="req">*</span></label>
+            <input id="record-title" name="titulo" type="text" maxlength="100" autocomplete="off" placeholder="Amanecer en el Montseny" aria-describedby="error-title" required>
+            <p class="field__error" id="error-title" hidden></p>
+          </div>
+
+          <fieldset class="field field--sports">
+            <legend>Deporte <span class="req">*</span></legend>
+            <div class="sport-options" id="sport-options"></div>
+            <p class="field__error" id="error-sport" hidden></p>
+          </fieldset>
+
+          <div class="form__row">
+            <div class="field">
+              <label for="record-date">Fecha <span class="req">*</span></label>
+              <input id="record-date" name="fecha" type="date" required aria-describedby="error-date">
+              <p class="field__error" id="error-date" hidden></p>
+            </div>
+            <div class="field">
+              <label for="record-distance">Distancia <span class="opt">(km)</span></label>
+              <input id="record-distance" name="distancia" type="number" min="0" step="0.1" inputmode="decimal" placeholder="42,5" aria-describedby="error-distance">
+              <p class="field__error" id="error-distance" hidden></p>
+            </div>
+          </div>
+
+          <div class="form__row">
+            <div class="field">
+              <label for="record-duration">Duración <span class="opt">(opcional)</span></label>
+              <input id="record-duration" name="duracion" type="text" maxlength="30" placeholder="1 h 45 min" aria-describedby="error-duration">
+              <p class="field__error" id="error-duration" hidden></p>
+            </div>
+            <div class="field">
+              <label for="record-elevation">Desnivel positivo <span class="opt">(m)</span></label>
+              <input id="record-elevation" name="desnivel" type="number" min="0" step="1" inputmode="numeric" placeholder="820" aria-describedby="error-elevation">
+              <p class="field__error" id="error-elevation" hidden></p>
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="record-description">Descripción personal</label>
+            <textarea id="record-description" name="descripcion" rows="3" maxlength="1200" placeholder="¿Qué hiciste? ¿Con quién? ¿Qué te llevas de este día?"></textarea>
+          </div>
+
+          <div class="field">
+            <p class="label">Fotografías <span class="opt">(hasta 8)</span></p>
+            <div class="dropzone" id="dropzone">
+              <input type="file" id="photo-input" accept="image/*" multiple hidden>
+              <div class="dropzone__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M4 8h3l1.5-2h7L17 8h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1Z"></path><circle cx="12" cy="13" r="3.4"></circle>
+                </svg>
+              </div>
+              <div class="dropzone__text">
+                <strong>Añade fotos de la aventura</strong>
+                <span>Arrastra imágenes aquí o elige archivos. Se optimizan automáticamente.</span>
+              </div>
+              <button type="button" class="btn btn--ghost btn--sm" id="photo-pick">Elegir fotos</button>
+            </div>
+            <p class="photo-status" id="photo-status" aria-live="polite"></p>
+            <div class="photo-previews" id="photo-previews"></div>
+            <p class="field__hint" id="photo-counter">0 de 8 fotos</p>
+          </div>
+
+          <div class="field">
+            <label for="record-notes">Notas adicionales <span class="opt">(opcional)</span></label>
+            <textarea id="record-notes" name="notas" rows="2" maxlength="1200" placeholder="Material, sensaciones, lo que quieras recordar…"></textarea>
+          </div>
+        </div>
+
+        <footer class="form__footer">
+          <p class="form__note">Tus recuerdos se guardan solo en este navegador.</p>
+          <div class="form__actions">
+            <button type="button" class="btn btn--ghost" data-close-dialog>Cancelar</button>
+            <button type="submit" class="btn btn--primary" id="save-record">Guardar recuerdo</button>
+          </div>
+        </footer>
+      </form>
+    </div>
+  </dialog>
+
+  <!-- ================= DETALLE ================= -->
+  <dialog class="modal" id="detail-dialog" aria-labelledby="detail-title">
+    <div class="modal__panel modal__panel--detail">
+      <button type="button" class="icon-btn modal__close-float" data-close-dialog aria-label="Cerrar detalle">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"></path></svg>
+      </button>
+      <div class="detail__media" id="detail-media"></div>
+      <div class="detail__body">
+        <div class="detail__meta" id="detail-meta"></div>
+        <h2 class="detail__title" id="detail-title" tabindex="-1"></h2>
+        <p class="detail__date" id="detail-date"></p>
+        <dl class="detail__stats" id="detail-stats"></dl>
+        <p class="detail__description" id="detail-description"></p>
+        <div class="detail__notes" id="detail-notes" hidden></div>
+        <footer class="detail__actions">
+          <button type="button" class="btn btn--danger-ghost" id="delete-record">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M4 7h16M9 7V5h6v2M6.5 7l.8 13h9.4l.8-13M10 11v5M14 11v5"></path>
+            </svg>
+            Eliminar
+          </button>
+          <div class="detail__actions-right">
+            <button type="button" class="btn btn--ghost" data-close-dialog>Cerrar</button>
+            <button type="button" class="btn btn--primary" id="edit-record">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M4 20h4l10-10-4-4L4 16v4Z"></path><path d="m13 7 4 4"></path>
+              </svg>
+              Editar recuerdo
+            </button>
+          </div>
+        </footer>
+      </div>
+    </div>
+  </dialog>
+
+  <!-- ================= CONFIRMACIÓN ================= -->
+  <dialog class="modal" id="confirm-dialog" aria-labelledby="confirm-title">
+    <div class="modal__panel modal__panel--confirm">
+      <div class="confirm__icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 3 2.5 20h19L12 3Z"></path><path d="M12 9v5"></path><circle cx="12" cy="17.2" r=".9" fill="currentColor" stroke="none"></circle>
+        </svg>
+      </div>
+      <h2 class="modal__title" id="confirm-title">¿Eliminar este recuerdo?</h2>
+      <p class="confirm__text" id="confirm-text"></p>
+      <div class="confirm__actions">
+        <button type="button" class="btn btn--ghost" id="confirm-cancel">Cancelar</button>
+        <button type="button" class="btn btn--danger" id="confirm-accept">Eliminar</button>
+      </div>
+    </div>
+  </dialog>
+
+  <!-- ================= VISOR DE FOTOS ================= -->
+  <dialog class="lightbox" id="lightbox" aria-label="Fotografía ampliada">
+    <button type="button" class="lightbox__close icon-btn" data-close-dialog aria-label="Cerrar fotografía">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"></path></svg>
+    </button>
+    <button type="button" class="lightbox__nav lightbox__nav--prev icon-btn" id="lightbox-prev" aria-label="Foto anterior">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 5-7 7 7 7"></path></svg>
+    </button>
+    <img class="lightbox__img" id="lightbox-img" alt="">
+    <button type="button" class="lightbox__nav lightbox__nav--next icon-btn" id="lightbox-next" aria-label="Foto siguiente">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7"></path></svg>
+    </button>
+    <p class="lightbox__counter" id="lightbox-counter"></p>
+  </dialog>
+
+  <!-- ================= INFORMACIÓN LEGAL ================= -->
+  <dialog class="modal" id="legal-dialog" aria-labelledby="legal-title">
+    <div class="modal__panel modal__panel--legal">
+      <header class="modal__head">
+        <div>
+          <p class="eyebrow">Información legal</p>
+          <h2 class="modal__title" id="legal-title">Privacidad y derechos</h2>
+        </div>
+        <button type="button" class="icon-btn" data-close-dialog aria-label="Cerrar información legal">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"></path></svg>
+        </button>
+      </header>
+
+      <div class="legal">
+        <div class="legal__tabs" role="tablist" aria-label="Secciones de información legal">
+          <button type="button" class="legal__tab is-active" role="tab" id="tab-privacidad" aria-controls="panel-privacidad" aria-selected="true" data-legal-tab="privacidad">Privacidad</button>
+          <button type="button" class="legal__tab" role="tab" id="tab-derechos" aria-controls="panel-derechos" aria-selected="false" tabindex="-1" data-legal-tab="derechos">Autoría y derechos</button>
+          <button type="button" class="legal__tab" role="tab" id="tab-contacto" aria-controls="panel-contacto" aria-selected="false" tabindex="-1" data-legal-tab="contacto">Contacto</button>
+        </div>
+
+        <div class="legal__panels">
+          <section class="legal__panel" id="panel-privacidad" role="tabpanel" aria-labelledby="tab-privacidad" tabindex="0">
+            <p class="legal__updated">Última actualización: octubre de 2026 · Versión 1.0 (en desarrollo)</p>
+
+            <h3>1. Responsable</h3>
+            <p>
+              Sports Memories es un proyecto personal creado y mantenido por <strong>Diego Ruiz</strong>.
+              Puedes contactar con el responsable en <a href="mailto:diego.ruiz@example.com">diego.ruiz@example.com</a>.
+            </p>
+
+            <h3>2. Qué datos se tratan</h3>
+            <p>
+              Solo se gestionan los datos que tú escribes voluntariamente en la aplicación: título de la
+              actividad, tipo de deporte, fecha, descripción, notas, distancia, duración, desnivel y las
+              fotografías que decidas añadir.
+            </p>
+            <p>
+              No se solicitan nombre, correo electrónico, teléfono ni ningún dato identificativo. No hay
+              registro de usuarios, formularios de contacto, analítica, cookies de seguimiento ni publicidad.
+            </p>
+
+            <h3>3. Dónde se guardan</h3>
+            <p>
+              Todo se almacena mediante <code>localStorage</code> en <strong>tu propio navegador</strong> y en
+              tu dispositivo. La aplicación no envía ninguna información a servidores externos: no existe
+              backend ni base de datos remota.
+            </p>
+            <p>
+              Por ese mismo motivo, si cambias de navegador, usas el modo incógnito o borras los datos de
+              navegación, los recuerdos desaparecerán. Los recuerdos no se sincronizan entre dispositivos.
+            </p>
+
+            <h3>4. Para qué se usan</h3>
+            <p>
+              Únicamente para mostrarte tu diario deportivo dentro de la propia aplicación: listar tus
+              actividades, situarlas en el calendario, filtrarlas y mostrar sus fotografías. No se utilizan
+              con ninguna otra finalidad ni se comparten con terceros.
+            </p>
+
+            <h3>5. Cuánto tiempo se conservan</h3>
+            <p>
+              Hasta que tú decidas eliminarlos. Puedes borrar un recuerdo concreto desde el detalle del
+              recuerdo, o eliminar todo de golpe borrando los datos del sitio en tu navegador.
+            </p>
+
+            <h3>6. Tus derechos</h3>
+            <p>
+              Como los datos están solo en tu dispositivo, tienes el control total y puedes ejercerlos
+              directamente desde la aplicación:
+            </p>
+            <ul>
+              <li><strong>Acceso:</strong> consulta todos tus recuerdos en la sección «Recuerdos».</li>
+              <li><strong>Rectificación:</strong> abre cualquier recuerdo y pulsa «Editar recuerdo».</li>
+              <li><strong>Supresión:</strong> pulsa «Eliminar» en el detalle del recuerdo.</li>
+              <li><strong>Portabilidad:</strong> los datos son tuyos y están en tu navegador.</li>
+              <li><strong>Oposición y limitación:</strong> basta con no usar la aplicación o borrar sus datos.</li>
+            </ul>
+
+            <h3>7. Menores</h3>
+            <p>
+              Esta aplicación es un proyecto personal y no está dirigida a menores de 14 años. No se recogen
+              datos de menores de forma consciente.
+            </p>
+
+            <h3>8. Cambios en esta política</h3>
+            <p>
+              Al ser un proyecto en desarrollo, el contenido y las funciones pueden cambiar. Si la política
+              de privacidad se modifica, se actualizará esta pantalla indicando la fecha del cambio.
+            </p>
+
+            <p class="legal__disclaimer">
+              Nota: este texto es una declaración informativa adaptada a una aplicación que no recoge datos en
+              servidores. No sustituye al asesoramiento de un profesional legal.
+            </p>
+          </section>
+
+          <section class="legal__panel" id="panel-derechos" role="tabpanel" aria-labelledby="tab-derechos" tabindex="0" hidden>
+            <p class="legal__updated">Última actualización: octubre de 2026 · Versión 1.0 (en desarrollo)</p>
+
+            <h3>1. Titularidad</h3>
+            <p>
+              © 2026 <strong>Diego Ruiz</strong>. Todos los derechos reservados. El código fuente, el diseño
+              visual, los textos de la interfaz, los iconos y la identidad de Sports Memories son obra de
+              Diego Ruiz.
+            </p>
+
+            <h3>2. Uso permitido</h3>
+            <p>
+              Puedes usar Sports Memories para guardar y gestionar tu diario deportivo personal, sin coste y
+              sin registro. No está permitido revender la aplicación, presentarla como propia ni publicarla
+              sin autorización expresa del autor.
+            </p>
+
+            <h3>3. Tus contenidos siguen siendo tuyos</h3>
+            <p>
+              Las fotografías, descripciones y notas que añadas te pertenecen. El autor de la aplicación no
+              accede a ellas ni reclama ningún derecho sobre tu contenido.
+            </p>
+
+            <h3>4. Proyecto en desarrollo</h3>
+            <p>
+              Sports Memories está <strong>en desarrollo activo</strong>. Esto significa que puede contener
+              errores, cambios de funcionamiento o funciones incompletas, y que no se garantiza la
+              disponibilidad continua ni la conservación de los datos almacenados en el navegador.
+            </p>
+
+            <h3>5. Copias de seguridad</h3>
+            <p>
+              Como los datos viven en tu navegador, la responsabilidad de conservarlos es tuya. Si un recuerdo
+              es importante, guarda las fotografías también en tu dispositivo o en tu nube personal.
+            </p>
+
+            <h3>6. Ausencia de garantías y responsabilidad</h3>
+            <p>
+              La aplicación se ofrece «tal cual», sin garantías de ningún tipo. El autor no se responsabiliza
+              de la pérdida de datos derivada de borrados del navegador, cambios de dispositivo, modo
+              incógnito o fallos técnicos.
+            </p>
+
+            <h3>7. Componentes de terceros</h3>
+            <p>
+              La aplicación no incluye librerías, frameworks, tipografías externas ni servicios de terceros.
+              Todo el código y los gráficos son propios.
+            </p>
+          </section>
+
+          <section class="legal__panel" id="panel-contacto" role="tabpanel" aria-labelledby="tab-contacto" tabindex="0" hidden>
+            <p class="legal__updated">Versión 1.0 · Proyecto en desarrollo</p>
+
+            <h3>Contacto</h3>
+            <p>
+              ¿Has encontrado un error, echas en falta una función o quieres proponer una mejora? Escribe a
+              <a href="mailto:diego.ruiz@example.com">diego.ruiz@example.com</a> contando qué te ha pasado.
+            </p>
+
+            <h3>Qué incluir en tu mensaje</h3>
+            <ul>
+              <li>El navegador y el dispositivo que usas.</li>
+              <li>Los pasos que seguiste antes del problema.</li>
+              <li>Si es un error de guardado o de espacio, cuántos recuerdos y fotos tienes.</li>
+            </ul>
+
+            <h3>Creador</h3>
+            <p>
+              <strong>Diego Ruiz</strong> — diseño y desarrollo de Sports Memories.
+            </p>
+
+            <h3>Sobre esta versión</h3>
+            <p>
+              Versión 1.0 en desarrollo. Las funciones de sincronización entre dispositivos, exportación de
+              recuerdos y copias de seguridad están previstas para próximas versiones.
+            </p>
+          </section>
+        </div>
+      </div>
+
+      <footer class="legal__footer">
+        <p>Proyecto personal en desarrollo · Los datos se guardan solo en tu navegador.</p>
+        <button type="button" class="btn btn--ghost" data-close-dialog>Cerrar</button>
+      </footer>
+    </div>
+  </dialog>
+
+  <div class="toasts" id="toasts" role="status" aria-live="polite" aria-atomic="false"></div>
+  <script src="script.js"></script>
+</body>
+</html>
